@@ -81,48 +81,20 @@ namespace LongModArithmetic
               return calculator.ShiftBitsToHigh(u, shift);           
         }
         
-        public Number MCalculation(Number n)
+        public Number MuConstant(Number a,Number z)
         {
-            Number r = new Number(0);
-            var beta = new Number("1");
-            beta =  calculator.ShiftBitsToHigh(beta,2*calculator.BitLength(n));
-            return calculator.LongDiv(beta,n,out r);
+            int k = calculator.BitLength(a);
+            Number m = calculator.LongDiv(calculator.ShiftBitsToHigh(one, k), z, out zero);
+            return m;
         }
-
-        /*
-        public Number BarrettReduction(Number x, Number z, Number m)
-        {
-            Number a = new Number(x.ToString());
-            Number r = new Number(1);
-            Number q = new Number(1);
-            int k = calculator.BitLength(z);
-
-            if(calculator.LongCmp(a,calculator.LongMull(z,z))==1)
-            {
-                var c = new Number(1);
-                q = calculator.LongDiv(a,z,out c);
-            }
-            else
-            { 
-            q = calculator.ShiftBitsToLow(a, k - 1);
-            q = calculator.LongMull(q, m);
-            q = calculator.ShiftBitsToLow(q, k + 1);
-            }
-            r.array = calculator.LongSub(a,calculator.LongMull(q, z));
-            if(calculator.LongCmp(r, z) >= 0)
-            {
-                r.array = calculator.LongSub(r, z);
-            }
-            return r;
-        }*/
 
         public Number BarrettReduction(Number x, Number z)
         {
             Number a = new Number(x.ToString());
-            Number r = new Number(1);
             Number q = new Number(1);
-            int k = calculator.BitLength(z);
-            Number m = calculator.LongDiv(calculator.ShiftBitsToHigh(one,k), z ,out zero);
+            int k = calculator.BitLength(a);
+            Number m = calculator.LongDiv(calculator.ShiftBitsToHigh(one, k), z, out zero);
+
             q = calculator.ShiftBitsToLow(calculator.LongMull(a, m), k);
             a.array = calculator.LongSub(a, calculator.LongMull(q, z));
             if(calculator.LongCmp(z,a) <= 0)
@@ -131,14 +103,13 @@ namespace LongModArithmetic
             }
             return a;
         }
-
+        
         public Number LongModPowerBarrett(Number x,Number y,Number z)
         {
             Number c = new Number("1");
             Number a = new Number(x.ToString());
             Number b = new Number(y.ToString());
-           
-
+         
             for (int i = 0; i < b.array.Length ; i++)
             {
                 ulong word = b.array[i];
@@ -147,9 +118,9 @@ namespace LongModArithmetic
                     ulong bit = word & 1;
                     if(bit == 1)
                     {
-                        c = BarrettReduction(calculator.LongMull(c,a),z);
+                        c = BarrettReduction(calculator.LongMull(c, a), z);
                     }
-                    a = BarrettReduction(calculator.LongMull(a,a),z);
+                    a = BarrettReduction(calculator.LongMull(a, a), z);
                 }
             }
             return c;

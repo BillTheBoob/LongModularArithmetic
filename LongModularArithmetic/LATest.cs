@@ -34,7 +34,6 @@ namespace LongArithmetics.Tests
 
             var calculator = new Calculator();
             var c = calculator.BitLength(number);
-
             Assert.That(number.array, Is.EquivalentTo(expected));
         }
 
@@ -68,7 +67,7 @@ namespace LongArithmetics.Tests
          [TestCase("0000000000000000FFFFFFFFFFFFFFFF",64, "FFFFFFFFFFFFFFFF0000000000000000")]
          [TestCase("0000000000000000FFFFFFFFFFFFFFFF",63, "7FFFFFFFFFFFFFFF8000000000000000")]
          [TestCase("00000000000000000000000000000000FFFFFFFFFFFFFFFF",128,"FFFFFFFFFFFFFFFF00000000000000000000000000000000")]
-         public void TestShift(string hex1,int shift, string hex2)
+         public void TestShiftBitsToHigh(string hex1,int shift, string hex2)
          {
              var a = new Number(hex1);
              var b = new Number(hex2);
@@ -87,7 +86,7 @@ namespace LongArithmetics.Tests
         [TestCase("0000000000000000FFFFFFFFFFFFFFFF", 64)]
         [TestCase("0000000000000000FFFFFFFFFFFFFFFF", 63)]
         [TestCase("00000000000000000000000000000000FFFFFFFFFFFFFFFF", 128)]
-        public void ShiftImmutability(string hex, int shift)
+        public void TestShiftBitsToHighImmutability(string hex, int shift)
         {
             var number = new Number(hex);
             var expected = new ulong[number.array.Length];
@@ -98,7 +97,37 @@ namespace LongArithmetics.Tests
 
             Assert.That(number.array, Is.EquivalentTo(expected));
         }
-       
+
+        [Test]
+        [TestCase("FFAAA242432FFFFFFF12352565897", 45, "7FD551212197FFFFFF")]
+        [TestCase("FFFFFFFF", 1, "7FFFFFFF")]
+        [TestCase("AADDDDDDFFFF3128898923482954398923479827FFFFF", 123, "155BBBBBBFFFE62")]
+        [TestCase("F423FFFFFCE22", 4, "F423FFFFFCE2")]
+        [TestCase("118427B3B467203A97DE75CF815074515C3E3D1944A5192", 64, "118427B3B467203A97DE75CF8150745")]
+
+        public void TestShiftBitsToLow(string hex, int shift, string expected)
+        {
+            var a = new Number(hex);
+            var calculator = new Calculator();
+            Assert.AreEqual(expected, calculator.ShiftBitsToLow(a, shift).ToString());
+        }
+
+        [Test]
+        [TestCase("FFAAA242432FFFFFFF12352565897", 45)]
+        [TestCase("FFFFFFFF", 1)]
+        [TestCase("AADDDDDDFFFF3128898923482954398923479827FFFFF", 123)]
+        [TestCase("F423FFFFFCE22", 4)]
+        [TestCase("118427B3B467203A97DE75CF815074515C3E3D1944A5192", 64)]
+
+        public void TestShiftBitsToLowImutability(string hex, int shift)
+        {
+            var a = new Number(hex);
+            var temp = a;
+            var calculator = new Calculator();
+            var res = calculator.ShiftBitsToLow(a, shift);
+            CollectionAssert.AreEqual(temp.array,a.array);
+        }
+
 
          [Test]
          [TestCase("0", "0", "0")]
@@ -128,10 +157,41 @@ namespace LongArithmetics.Tests
          }
 
         [Test]
+        [TestCase("0", "0", "0")]
+        [TestCase("5", "5", "0")]
+        [TestCase("5C353D8D758E06E4DFFB37B5", "0", "5C353D8D758E06E4DFFB37B5")]
+        [TestCase("5C353D8D758E06E4DFFB37B5", "1", "5C353D8D758E06E4DFFB37B4")]
+        [TestCase("B427629D0ECE5E77476643F0310B1FCF029CA9286165FD5638CDD88155E5E68A2B66FC28861FB57657E27A1D41D3E61730FAB712FB0E55728443D1A18C27DE41"
+                , "5DAC441A8D178EEA44A1925C8CA96F87CAD1A377C0A32F6B1B5EF9B9C35EB4C880A08ABDA44199E807A4938658C6EC7CA27C558C226EE5E24E3CA8DA66A74E71",
+                 "567B1E8281B6CF8D02C4B193A461B04737CB05B0A0C2CDEB1D6EDEC7928731C1AAC6716AE1DE1B8E503DE696E90CF99A8E7E6186D89F6F90360728C725808FD0")]
+        [TestCase("AFB69AD91CB62A4F1A955E271B78D8DFF74A4128CF9404854AF14C11BE5B37E96DE97B2F54F668FEBED6162E30FD36D3B6F960A67E1129706EC5A0EF57DD3E45",
+                 "8FCAA5A2D5E40D532389BC06A797E51A224CA67B43D9FD5D056F5E4020FF7266F3B30337952B3E694B579C82C1BFD3BC6B64FA7BA85804237852F410B5F276C4",
+                 "1FEBF53646D21CFBF70BA22073E0F3C5D4FD9AAD8BBA07284581EDD19D5BC5827A3677F7BFCB2A95737E79AB6F3D63174B94662AD5B9254CF672ACDEA1EAC781")]
+        [TestCase("62D85A0F903DD94865435F59E9785DCF8593C0DB4E73D3A7FBB3EC99B6CD4C3528A93806608DD6F2F1396068E75EEF79D25FA18F36D39F44AAFB26454367B2E2",
+                 "2820EE434847B161C014E717E54207FFCD348088E58A83BF460679142250F9DD3ACAC62FFC55C6446F9F4782F3F144B8CA072CB149F1876A55A9D117A84F0980",
+                 "3AB76BCC47F627E6A52E7842043655CFB85F405268E94FE8B5AD7385947C5257EDDE71D6643810AE819A18E5F36DAAC1085874DDECE217DA5551552D9B18A962")]
+        [TestCase("8C78744E2F49DF62D13AD204E00F731BAE0E085C353D8D758E06E4DFFB37B57A66ECC52CF2D7D888C49C2794E6FB944C4183A128203932FEBEA4B6E62B2EBDAD",
+                 "4112652E8135D145329F0DAE738F75C35004A154F1C43449DB87B6BE0F3EBF5B3BA1016F0A04A10C7EA76C3D30EEDB34B1E6E1009B3FF5C987FA313097485E6F",
+                 "4B660F1FAE140E1D9E9BC4566C7FFD585E0967074379592BB27F2E21EBF8F61F2B4BC3BDE8D3377C45F4BB57B60CB9178F9CC02784F93D3536AA85B593E65F3E")]
+        public void TestLongSubImutability(string hex1, string hex2, string hex3)
+        {
+            var a = new Number(hex1);
+            var b = new Number(hex2);
+            var c = new Number(a.array.Length);
+            var temp = new Number(hex1);
+            var calculator = new Calculator();
+            c.array = calculator.LongSub(a, b);
+            Assert.AreEqual(hex3, c.ToString());
+            CollectionAssert.AreEqual(temp.array, a.array);
+        }
+
+
+        [Test]
         [TestCase("400000000",34)]
         [TestCase("8000000000000000",63)]
         [TestCase("200000000000000000",69)]
         [TestCase("40000000000000000000000000000000000000000000000000000000000",234)]
+
         public void TestSetBit(string hex1,int num)
         {
 
@@ -141,7 +201,6 @@ namespace LongArithmetics.Tests
             c = calculator.SetBit(c, num);
             Assert.AreEqual(hex1, c.ToString());
         }
-
 
         [Test]
         [TestCase("E789B4A323B5037FF14EBAC5A300D44BD78EDEE8708BCB746854B217F08FFCB7",
@@ -168,6 +227,35 @@ namespace LongArithmetics.Tests
             Assert.AreEqual(hex3, c.ToString());
         }
 
+
+        [Test]
+        [TestCase("E789B4A323B5037FF14EBAC5A300D44BD78EDEE8708BCB746854B217F08FFCB7",
+                 "DD0E39E14873C9C86FA608F7623301989922D162C74D49D6E3C4E209D23884FF",
+                 "C7EEBED22186C26BC2E7C43BF06865123381396ABD8A5DD33272825AA0A0BED911B9361077209146687B646C65F9111E4C1C366B9F83ABE28409EB1F43C31649")]
+        [TestCase("BE07D5E88D9057721C2CFE1AA683A284DAD9490790A7D1D9F9FECA0C9874A1B9",
+                 "6B2C9BED3A0E0F6A01DABA33B2B7E7B7F8ECCC360E6BEC7630645506B5B1A63A",
+                 "4F8E637FCE00B5B2B5E8BAA8FB6D4DC1C8EA36B07788FB6886AEA1300F63C2C56D99899A1625C93871243DCD5168EF0BF00D38690D4C4F949DF00807C93399EA")]
+        [TestCase("508032BC4DD3EAC6340064FD84562B160FA3678606F1E3CB224EFE493143EF63",
+                 "8CD5967C5062F967B44187A68E74EAE8C4FAA54863C441A467A38F1AF4701F6C",
+                 "2C4945BB6656BDE22B93AADD99A0CEC2B3C918B2AFDED7C071A18CAD5CD7240D8650C6BE3B4FAB63674CB586BAD222DC4205568ED5CAE7B941C00EC919F5FAC4")]
+
+        [TestCase("5555555555555555555555", "2",
+                 "AAAAAAAAAAAAAAAAAAAAAA")]
+        [TestCase("88119363FB9884B0D7F7E5886920606835B368AB56413755E74769571E0092EDEFF602BF2DBEE98FEF81264AC64EF0D0671F1121F7C47FE7FC5522DD570E877B",
+                 "78A231ABDBBF314389CD15A55738D74E2A3F16088D33F73F123A98CB29A238B70898C6915E439349E65BEFEEDFDFECE71FFA23226A496D43EBE9B1D1973E1382",
+                 "401E729CD8F4F40AE04DAA04159E63734A10896B7E961AD1F1352DA5B812E48A6CC9A07AD4CDA40EC70EFCA1EC04ADA720066258054CE62D25BDAF5AEC70FE77678210884937E56B3C3341C69E0075EF1BBF1D0551ACB692AB09ADAD7656E8B6A6538782C838A7770381D55968442E28FEE9C89888D76664CB426FB5A638ED76")]
+        public void TestLongMullImmutability(string hex1, string hex2, string hex3)
+        {
+            var calculator = new Calculator();
+            var a = new Number(hex1);
+            var b = new Number(hex2);
+            var temp1 = new Number(hex1);
+            var temp2 = new Number(hex2);
+            var c = calculator.LongMull(a, b);
+
+            CollectionAssert.AreEqual(temp1.array, a.array);
+            CollectionAssert.AreEqual(temp2.array, b.array);
+        }
 
         [Test]
         [TestCase("3AC9EC8A7D3A554C1E9094A1854ACB0E2B7CBDDE59C2ADA018173C98BF4DFB1BD8D5DCCFD5BDFA9E91C8839958684D7121B4DA8863925E77EA0A27A28867B6CE",
@@ -202,7 +290,6 @@ namespace LongArithmetics.Tests
                    "1",
                    "2",
                    "0")]
-
         public void TestLongDiv(string hex1, string hex2, string hex3, string hex4)
         {
             var a = new Number(hex1);
@@ -215,8 +302,6 @@ namespace LongArithmetics.Tests
             Assert.AreEqual(hex3, q.ToString());
             Assert.AreEqual(hex4, r.ToString());
         }
-
-
 
         [Test]
         [TestCase("172CAACEFD9963CF83E9E24EDBAA31A9DAD8A949B465A8BA94F222D0650A0912",
@@ -243,8 +328,6 @@ namespace LongArithmetics.Tests
             Assert.AreEqual(hex3,c.ToString());
         }
 
-
-        
         [Test]
         [TestCase("2", "0", "1")]
         [TestCase("2", "1", "2")]
@@ -253,7 +336,6 @@ namespace LongArithmetics.Tests
         [TestCase("FFFFFFFFFFFFFFFFFFFFFFFFF", "0", "1")]
         [TestCase("0", "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "0")]
         [TestCase("0", "2", "0")]
-      
         public void TestGorner(string hex1, string hex2, string hex3)
         {
             var a = new Number(hex1);
@@ -261,6 +343,40 @@ namespace LongArithmetics.Tests
             Calculator calculator = new Calculator();
             var c = calculator.Gorner(a, b);
             Assert.AreEqual(hex3, c.ToString());
+        }
+
+
+        [Test]
+        [TestCase("E789B4A323B5037FF14EBAC5A300D44BD78EDEE8708BCB746854B217F08FFCB7")]
+        [TestCase("BE07D5E88D9057721C2CFE1AA683A284DAD9490790A7D1D9F9FECA0C9874A1B9")]
+        [TestCase("508032BC4DD3EAC6340064FD84562B160FA3678606F1E3CB224EFE493143EF63")]
+        [TestCase("5555555555555555555555")]
+        [TestCase("88119363FB9884B0D7F7E5886920606835B368AB56413755E74769571E0092EDEFF602BF2DBEE98FEF81264AC64EF0D0671F1121F7C47FE7FC5522DD570E877B")]
+        public void TestBisectedImutability(string hex1)
+        {
+            var calculator = new Calculator();
+            var a = new Number(hex1);
+            var temp = new Number(hex1);
+            var c = calculator.Bisected(a.array);
+            CollectionAssert.AreEqual(temp.array,a.array);
+        }
+
+        [Test]
+        [TestCase("E789B4A323B5037FF14EBAC5A300D44BD78EDEE8708BCB746854B217F08FFCB7")]
+        [TestCase("BE07D5E88D9057721C2CFE1AA683A284DAD9490790A7D1D9F9FECA0C9874A1B9")]
+        [TestCase("508032BC4DD3EAC6340064FD84562B160FA3678606F1E3CB224EFE493143EF63")]
+        [TestCase("5555555555555555555555")]
+        [TestCase("88119363FB9884B0D7F7E5886920606835B368AB56413755E74769571E0092EDEFF602BF2DBEE98FEF81264AC64EF0D0671F1121F7C47FE7FC5522DD570E877B")]
+        public void TestUnitedImutability(string hex1)
+        {
+            var calculator = new Calculator();
+            var a = new Number(hex1);
+            
+            var c = calculator.Bisected(a.array);
+            var temp = c;
+            var g = calculator.United(c);
+
+            CollectionAssert.AreEqual(temp, c);
         }
     }
 }

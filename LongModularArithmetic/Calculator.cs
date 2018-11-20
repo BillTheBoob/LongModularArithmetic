@@ -129,7 +129,10 @@ public class Calculator
         {
             united[i] = (array[j + 1] << 32) | (array[j]);
         }
-        return united;
+        int index = HighNotZeroIndex(united)+1;
+        ulong[] copy = new ulong[index];
+        Array.Copy(united,copy,index);
+        return copy;
     }
 
     public Number LongAdd(Number z, Number x)
@@ -145,8 +148,10 @@ public class Calculator
         return c;
     }
 
-    public ulong[] LongSub(Number z, Number x)
+    public ulong[] LongSub(Number a, Number b)
     {
+        Number z = new Number(a.ToString());
+        Number x = new Number(b.ToString());
         LengthControl(z, x);
         var c = new ulong[z.array.Length];
         if (LongCmp(z, x) == 0) { return c; }
@@ -159,8 +164,10 @@ public class Calculator
         return c;
     }
 
-    public Number LongMull(Number a, Number b)
+    public Number LongMull(Number x, Number y)
     {
+        Number a = new Number(x.ToString());
+        Number b = new Number(y.ToString());
         LengthControl(a, b);
         var bisectedA = Bisected(a.array);
         var bisectedB = Bisected(b.array);

@@ -9,16 +9,15 @@ namespace LongModularArithmetic
 {
     class Program
     {
-      
-
-
         static void Main(string[] args)
         {
+            var b = new Number("5555555555555555555555");
+            var c = new Number("2");
             Calculator calculator = new Calculator();
-            ModCalculator modCalculator = new ModCalculator();
-            var i = new Number("2BDC8D2");
-            Console.WriteLine(calculator.BitLength(i));
-            
+            Console.WriteLine(c.array.Length);
+
+            var u = calculator.LongMull(b, c);
+            Console.WriteLine(c.array.Length);
         }
     }
 }
