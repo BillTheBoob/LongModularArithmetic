@@ -46,7 +46,7 @@ namespace LongModArithmetics.Tests
             ModCalculator modcalculator = new ModCalculator();
             Assert.AreEqual(expected, modcalculator.SteinGCD(a, b).ToString());
         }
-
+/*
         [Test]
         [TestCase("2BDC8D2D7DC4A0531CC7F391B4DAD2D99E20F03E3B0DA1CBF7F89AABAA6D5E84E5ABD5359CD7F12A948747A34076DB7F8E5F01706C489A8B7DE9AA157A383BD47A0EF44688FF88717CC8D0FBF3BA49368486BDE1915DEFE1916A4FA67C26AB25B408642ACC7EA8771CAFE4892F450845C8788038F50B7CBC9716FF6CD7466625",
                   "7", "3")]
@@ -73,21 +73,20 @@ namespace LongModArithmetics.Tests
             var a = new Number(hex1);
             var b = new Number(hex2);
             ModCalculator modcalculator = new ModCalculator();
-            Calculator calculator = new Calculator();
-            Number m = modcalculator.MuConstant(a, b);
-            int k = calculator.BitLength(a);
-            var r = modcalculator.BarrettReduction(a, b);
+            Number m = modcalculator.ConstantMu(b);
+            var r = modcalculator.BarrettReduction(a, b, m);
             Assert.AreEqual(expected, r.ToString());
-        }
-
-
+        }*/
 
         [Test]
-        [TestCase("AB9399181470F", "FFAF", "9328F", "460D8")]
+      //  [TestCase("AB9399181470F", "FFAF", "9328F", "460D8")]
+        [TestCase("86AD2A6CFB9E45E42BF39EB9B45899AAF5AA4A7EA87579288FDE16A95D5CFC4EE091555175FE9EE6683A3D0BE3F010E2FF03BB6B66DEE6B6D9266C2753DE4367",
+                  "505BD210976A18454D4AC272BAF16F36EE4F322F6F9FBD8167F7172D7057EBE67D86D4DA5F644F067DF3874C940E3A1469016EBB3E33D36D34569DE80894388D",
+                  "EF64A544A9A93C11880CE0238D91335D1A824573579CE2DFF445B6FF9F40C22066E204AFB9B1ADC22C397D9E1DA74389D499EEE0955A2DC7192690E30F68FB1A",
+                   "DBCB3672989CCF687E450A4671726427004ADD0531994F007E38CEC13990EB507DC19BF3AC3112CB677E9D0C7AB1A0F8E6F17FB590B64541BF6562D31FE8C1F")]
         [TestCase("AB9399181470F","0","9328F","1")]
         [TestCase("AB9399181470F", "1", "9328F", "18D9C")]
-        [TestCase("FFFFFFFFFFFFFFFFFFFFFFFFFF", "FFFFFFFFFFF", "FF", "0")]
-
+      //  [TestCase("FFFFFFFFFFFFFFFFFFFFFFFFFF", "FFFFFFFFFFF", "FF", "0")]
         public void TestLongModPowerBarrett(string hex1, string hex2, string hex3, string expected)
         {
             var a = new Number(hex1);
