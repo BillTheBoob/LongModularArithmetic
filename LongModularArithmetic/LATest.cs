@@ -7,6 +7,7 @@ namespace LongArithmetics.Tests
     {
          [Test]
          [TestCase("0000000000000000000000000000000000000000000000000000000000000000002AAAA", 18)]
+         [TestCase("00000000000000000000000000000000000000000000000000000000000000000010", 5)]
          [TestCase("ABCDEFABCDEFABCDEFABCDEFABCDEFABCDEFABCDEFABCDEFABCDEFABCDEF0000000000000000000000",328)]
          [TestCase("1", 1)]
          [TestCase("AAAFFFFAAABBBB121231997BBBBA", 112)]
@@ -17,6 +18,7 @@ namespace LongArithmetics.Tests
              var calculator = new Calculator();
              Assert.AreEqual(len,calculator.BitLength(a));
          }
+
 
         [Test]
         [Description("Verifies that bitlen function does not modify the argument passed.")]
@@ -37,6 +39,7 @@ namespace LongArithmetics.Tests
             Assert.That(number.array, Is.EquivalentTo(expected));
         }
 
+
         [Test]
         [TestCase("1131A0939A911173", "1800000000000000", - 1)]  
         [TestCase("AAAFFFFAAABBBB121231997BBBBA", "7BBBBA", 1)]
@@ -51,6 +54,7 @@ namespace LongArithmetics.Tests
             Calculator calculator = new Calculator();
             Assert.AreEqual(sign, calculator.LongCmp(a, b));
         }
+
 
          [Test]
          [TestCase("ABCDEFABCDEFABCDEFABCDEFABCDEFABCDEFABCDEFABCDEFABCDEFABCDEF0000000000000000000000",328,
@@ -75,6 +79,7 @@ namespace LongArithmetics.Tests
              var c = calculator.ShiftBitsToHigh(a, shift);
              Assert.AreEqual(hex2,c.ToString());
          }
+
 
         [Test]
         [Description("Verifies that shifting bits function does not modify the argument passed.")]
@@ -113,6 +118,7 @@ namespace LongArithmetics.Tests
         }
 
         [Test]
+        [Description("Verifies that shifting bits function does not modify the argument passed.")]
         [TestCase("FFAAA242432FFFFFFF12352565897", 45)]
         [TestCase("FFFFFFFF", 1)]
         [TestCase("AADDDDDDFFFF3128898923482954398923479827FFFFF", 123)]
@@ -157,6 +163,7 @@ namespace LongArithmetics.Tests
          }
 
         [Test]
+        [Description("Verifies that LongSub function does not modify the argument passed.")]
         [TestCase("0", "0", "0")]
         [TestCase("5", "5", "0")]
         [TestCase("5C353D8D758E06E4DFFB37B5", "0", "5C353D8D758E06E4DFFB37B5")]
@@ -229,6 +236,7 @@ namespace LongArithmetics.Tests
 
 
         [Test]
+        [Description("Verifies that LongMull function does not modify the argument passed.")]
         [TestCase("E789B4A323B5037FF14EBAC5A300D44BD78EDEE8708BCB746854B217F08FFCB7",
                  "DD0E39E14873C9C86FA608F7623301989922D162C74D49D6E3C4E209D23884FF",
                  "C7EEBED22186C26BC2E7C43BF06865123381396ABD8A5DD33272825AA0A0BED911B9361077209146687B646C65F9111E4C1C366B9F83ABE28409EB1F43C31649")]
@@ -238,7 +246,6 @@ namespace LongArithmetics.Tests
         [TestCase("508032BC4DD3EAC6340064FD84562B160FA3678606F1E3CB224EFE493143EF63",
                  "8CD5967C5062F967B44187A68E74EAE8C4FAA54863C441A467A38F1AF4701F6C",
                  "2C4945BB6656BDE22B93AADD99A0CEC2B3C918B2AFDED7C071A18CAD5CD7240D8650C6BE3B4FAB63674CB586BAD222DC4205568ED5CAE7B941C00EC919F5FAC4")]
-
         [TestCase("5555555555555555555555", "2",
                  "AAAAAAAAAAAAAAAAAAAAAA")]
         [TestCase("88119363FB9884B0D7F7E5886920606835B368AB56413755E74769571E0092EDEFF602BF2DBEE98FEF81264AC64EF0D0671F1121F7C47FE7FC5522DD570E877B",
@@ -347,6 +354,7 @@ namespace LongArithmetics.Tests
 
 
         [Test]
+        [Description("Verifies that Bisected function does not modify the argument passed.")]
         [TestCase("E789B4A323B5037FF14EBAC5A300D44BD78EDEE8708BCB746854B217F08FFCB7")]
         [TestCase("BE07D5E88D9057721C2CFE1AA683A284DAD9490790A7D1D9F9FECA0C9874A1B9")]
         [TestCase("508032BC4DD3EAC6340064FD84562B160FA3678606F1E3CB224EFE493143EF63")]
@@ -362,6 +370,7 @@ namespace LongArithmetics.Tests
         }
 
         [Test]
+        [Description("Verifies that United function does not modify the argument passed.")]
         [TestCase("E789B4A323B5037FF14EBAC5A300D44BD78EDEE8708BCB746854B217F08FFCB7")]
         [TestCase("BE07D5E88D9057721C2CFE1AA683A284DAD9490790A7D1D9F9FECA0C9874A1B9")]
         [TestCase("508032BC4DD3EAC6340064FD84562B160FA3678606F1E3CB224EFE493143EF63")]

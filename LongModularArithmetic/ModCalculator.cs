@@ -87,12 +87,10 @@ namespace LongModArithmetic
             return calculator.LongDiv(calculator.ShiftBitsToHigh(one, k), n, out zero);
         }
 
-        public Number BarrettReduction(Number x, Number z, Number m)
+        public Number BarrettReduction(Number x, Number z, int k, Number m)
         {
             Number a = new Number(x.ToString());
             Number q = new Number(1);
-            int k = calculator.BitLength(z);
-         //   Number m = calculator.LongDiv(calculator.ShiftBitsToHigh(one, k), z, out zero);
 
             q = calculator.ShiftBitsToLow(calculator.LongMull(a, m), k);
             a.array = calculator.LongSub(a, calculator.LongMull(q, z));
@@ -102,26 +100,44 @@ namespace LongModArithmetic
             }
             return a;
         }
-
+        
         public Number LongModPowerBarrett(Number x,Number y,Number z)
         {
             Number c = new Number("1");
             Number a = new Number(x.ToString());
             Number b = new Number(y.ToString());
-            Number m = ConstantMu(z);
+            int k = 2*calculator.BitLength(a);
+            Number m = calculator.LongDiv(calculator.ShiftBitsToHigh(one, k), z, out zero);
 
-            for (int i = 0; i < b.array.Length ; i++)
+            ulong word;
+            ulong bit = 0ul;
+
+            for (int i = 0; i < b.array.Length - 1; i++)
             {
-                ulong word = b.array[i];
-                for (; word != 0; word >>= 1)
+                bit = 0;
+                word = b.array[i];
+                for (int j = 0; j != 64; j++)
                 {
-                    ulong bit = word & 1;
-                    if(bit == 1)
+                    bit = word & 1;
+                    if (bit == 1)
                     {
-                        c = BarrettReduction(calculator.LongMull(c, a), z, m);
+                        c = BarrettReduction(calculator.LongMull(c, a), z, k, m);
                     }
-                    a = BarrettReduction(calculator.LongMull(a, a), z, m);
+                    a = BarrettReduction(calculator.LongMull(a, a), z, k, m);
+                    word >>= 1;
                 }
+            }
+
+            word = b.array[b.array.Length - 1];
+
+            for (; word != 0; word >>= 1)
+            {
+                bit = word & 1;
+                if (bit == 1)
+                {
+                    c = BarrettReduction(calculator.LongMull(c, a), z, k, m);
+                }
+                a = BarrettReduction(calculator.LongMull(a, a), z, k, m);
             }
             return c;
         }
