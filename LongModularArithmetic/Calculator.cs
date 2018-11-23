@@ -13,6 +13,7 @@ public class Calculator
         Array.Resize(ref b.array, requiredlenght);
     }
 
+
     public int LongCmp(Number z, Number x)
     {
         LengthControl(z, x);
@@ -24,6 +25,7 @@ public class Calculator
         return 0;
     }
 
+
     public int HighNotZeroIndex(ulong[] a)
     {
         for (var i = a.Length - 1; i >= 0; i--)
@@ -32,6 +34,7 @@ public class Calculator
         }
         return 0;
     }
+
 
     public int BitLength(Number b)
     {
@@ -121,6 +124,7 @@ public class Calculator
         return bisected;
     }
 
+
     public ulong[] United(ulong[] array)
     {
         ulong[] united = new ulong[array.Length / 2];
@@ -135,6 +139,7 @@ public class Calculator
         return copy;
     }
 
+
     public Number LongAdd(Number z, Number x)
     {
         LengthControl(z, x);
@@ -147,6 +152,7 @@ public class Calculator
         }
         return c;
     }
+
 
     public ulong[] LongSub(Number a, Number b)
     {
@@ -164,7 +170,8 @@ public class Calculator
         return c;
     }
 
-    public Number LongMull(Number x, Number y)
+
+    public Number LongMul(Number x, Number y)
     {
         Number a = new Number(x.ToString());
         Number b = new Number(y.ToString());
@@ -188,6 +195,7 @@ public class Calculator
         return c;
     }
 
+
     public Number LongDiv(Number a, Number b, out Number r)
     {
         Number c = new Number(a.array.Length);
@@ -209,31 +217,67 @@ public class Calculator
         return q;
     }
 
+    public void FiveMultiplications( ref Number result, ref Number[] D, ref ulong word, ref int i)
+    {
+        result = LongMul(result, D[(word & 0xF000000000000000) >> 0x3C]);
+        if (i != 0)
+        {
+            for (int j = 1; j <= 4; j++)
+            {
+                result = LongMul(result, result);
+            }
+        }
+    }
+
     public Number Gorner(Number a, Number b)
     {
         Number zero = new Number(1);
+        var result = new Number("1");
         if (LongCmp(a, zero) == 0) { return zero; }
-        var C = new Number("1");
+        if (LongCmp(b, zero) == 0) { return result; }
         Number[] D = new Number[1 << 4];
         D[0] = new Number("1");
         D[1] = a;
 
-        for (int i = 2; i < D.Length; i++)
+        for (int w = 2; w < D.Length; w++)
         {
-            D[i] = LongMull(D[i - 1], a);
+            D[w] = LongMul(D[w - 1], a);
         }
 
-        for (int i = b.ToString().Length - 1; i >= 0; i--)
+        int hex_letters_in_ulong = 16;
+        ulong word = b.array[b.array.Length - 1];
+
+        while ((word & 0xF000000000000000) == 0)
         {
-            C = LongMull(C, D[b.array[i]]);
-            if (i != 0)
+            word <<= 4;
+            hex_letters_in_ulong--;
+        }
+
+        int amount_of_all_letters = (b.array.Length << 4) - (16 - hex_letters_in_ulong); 
+        int i = amount_of_all_letters - 1;
+
+        while (hex_letters_in_ulong != 0)
+        {
+            FiveMultiplications(ref result, ref D, ref word, ref i);
+            i--;
+            hex_letters_in_ulong--;
+            word <<= 4;
+        }
+        if (b.array.Length == 1) { return result;}
+
+
+        for (int v = b.array.Length - 2; v >= 0; v--)
+        {
+            word = b.array[v];
+            hex_letters_in_ulong = 16;
+            while (hex_letters_in_ulong != 0)
             {
-                for (int j = 1; j < 4; j++)
-                {
-                    C = LongMull(C, C);
-                }
+                FiveMultiplications(ref result, ref D, ref word, ref i);
+                i--;
+                hex_letters_in_ulong--;
+                word <<= 4;
             }
         }
-        return C;
+        return result;
     }
 }
