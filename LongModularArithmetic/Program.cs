@@ -8,10 +8,10 @@ using LongModArithmetic;
 namespace LongModularArithmetic
 {
     class Program
-    {
+    { 
         static void Main(string[] args)
         {
-          
+           
         }
     }
 }

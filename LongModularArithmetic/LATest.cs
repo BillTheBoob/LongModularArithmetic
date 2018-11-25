@@ -161,9 +161,8 @@ namespace LongArithmetics.Tests
          {
              var a = new Number(hex1);
              var b = new Number(hex2);
-             var c = new Number(a.array.Length);
              var calculator = new Calculator();
-             c.array = calculator.LongSub(a, b);
+             var c = calculator.LongSub(a, b);
              Assert.AreEqual(hex3, c.ToString());
          }
 
@@ -190,10 +189,9 @@ namespace LongArithmetics.Tests
         {
             var a = new Number(hex1);
             var b = new Number(hex2);
-            var c = new Number(a.array.Length);
             var temp = new Number(hex1);
             var calculator = new Calculator();
-            c.array = calculator.LongSub(a, b);
+            var c = calculator.LongSub(a, b);
             Assert.AreEqual(hex3, c.ToString());
             CollectionAssert.AreEqual(temp.array, a.array);
         }

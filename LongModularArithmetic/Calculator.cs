@@ -112,6 +112,7 @@ public class Calculator
         return LongAdd(a, temp);
     }
 
+
     public ulong[] Bisected(ulong[] array)
     {
         ulong[] bisected = new ulong[2 * array.Length];
@@ -154,18 +155,18 @@ public class Calculator
     }
 
 
-    public ulong[] LongSub(Number a, Number b)
+    public Number LongSub(Number a, Number b)
     {
         Number z = new Number(a.ToString());
         Number x = new Number(b.ToString());
         LengthControl(z, x);
-        var c = new ulong[z.array.Length];
+        Number c = new Number(z.array.Length);
         if (LongCmp(z, x) == 0) { return c; }
         var borrow = 0UL;
-        for (int i = 0; i < c.Length; i++)
+        for (int i = 0; i < c.array.Length; i++)
         {
-            c[i] = z.array[i] - x.array[i] - borrow;
-            borrow = c[i] > z.array[i] ? 1UL : 0UL;
+            c.array[i] = z.array[i] - x.array[i] - borrow;
+            borrow = c.array[i] > z.array[i] ? 1UL : 0UL;
         }
         return c;
     }
@@ -211,7 +212,7 @@ public class Calculator
                 t--;
                 c = ShiftBitsToHigh(b, t - k);
             }
-            r.array = LongSub(r, c);
+            r = LongSub(r, c);
             q = SetBit(q, t - k);
         }
         return q;

@@ -4,6 +4,7 @@ using System.Linq;
 public class Number
 {
     public ulong[] array = new ulong[0];
+    public int sign = 1;
 
     public Number(string a)
     {

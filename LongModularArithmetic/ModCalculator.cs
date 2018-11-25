@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace LongModArithmetic
 {
     class ModCalculator
@@ -39,7 +34,7 @@ namespace LongModArithmetic
                     t--;
                     c = calculator.ShiftBitsToHigh(b, t - k);
                 }
-                r.array = calculator.LongSub(r, c);
+                r = calculator.LongSub(r, c);
                 q = calculator.SetBit(q, t - k);
             }
             return r;
@@ -78,7 +73,7 @@ namespace LongModArithmetic
                     v = u;
                     u = temp;
                 }
-                v.array = calculator.LongSub(v, u);
+                v = calculator.LongSub(v, u);
             } while (calculator.LongCmp(v, zero) != 0);
             return calculator.ShiftBitsToHigh(u, shift);
         }
@@ -90,10 +85,10 @@ namespace LongModArithmetic
             Number q = new Number(1);
 
             q = calculator.ShiftBitsToLow(calculator.LongMul(a, m), k);
-            a.array = calculator.LongSub(a, calculator.LongMul(q, z));
+            a = calculator.LongSub(a, calculator.LongMul(q, z));
             if (calculator.LongCmp(z, a) <= 0)
             {
-                a.array = calculator.LongSub(a, z);
+                a = calculator.LongSub(a, z);
             }
             return a;
         }
