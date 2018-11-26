@@ -30,8 +30,8 @@ namespace PrimalityAlgorithms.Tests
 
         [Test]
         [Description("Verifies that Solovay–Strassen primality test works correctly.")]
-        [TestCase("133", 2000ul, true)]
-        public void TestSolovayStrassen(string hex, ulong k, bool expected)
+        [TestCase("133", 2000, true)]
+        public void TestSolovayStrassen(string hex, int k, bool expected)
         {
             var n = new Number(hex);
             PrimalityAlgorithm primality = new PrimalityAlgorithm();

@@ -42,7 +42,9 @@ namespace LongModArithmetics.Tests
         [TestCase("1DF9E9A", "4", "2")]
         [TestCase("8", "4", "4")]
         [TestCase("FFFFFF", "7", "7")]
-        [TestCase("5", "3", "1")]
+        [TestCase("3", "5", "1")]
+        [TestCase("112", "133", "1")]
+        [TestCase("102", "133", "1")]
         public void TestSteinGCD(string hex1, string hex2, string expected)
         {
             var a = new Number(hex1);

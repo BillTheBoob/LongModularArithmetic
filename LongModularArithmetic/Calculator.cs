@@ -220,7 +220,7 @@ public class Calculator
 
     public void FiveMultiplications( ref Number result, ref Number[] D, ref ulong word, ref int i)
     {
-        result = LongMul(result, D[(word & 0xF000000000000000) >> 0x3C]);
+        result = LongMul(result, D[(word) >> 0x3C]);
         if (i != 0)
         {
             for (int j = 1; j <= 4; j++)

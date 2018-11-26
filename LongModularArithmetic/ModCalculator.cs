@@ -20,10 +20,17 @@ namespace LongModArithmetic
 
         public Number Mod(Number a, Number b)
         {
-            Number r = new Number("0");
+            Number r = new Number(1);
+            if (a.sign == -1)
+            {
+                r = calculator.LongMul(calculator.LongSub(b, one), a);
+            }
+            else
+            {
+                r = new Number(a.ToString());
+            }
             Number c = new Number(a.array.Length);
             int k = calculator.BitLength(b);
-            r = new Number(a.ToString());
             var q = new Number(a.array.Length);
             while (calculator.LongCmp(r, b) >= 0)
             {
@@ -44,6 +51,7 @@ namespace LongModArithmetic
         public Number SteinGCD(Number z, Number x)
         {
             int shift = 0;
+            string tupo = z.ToString();
             Number u = new Number(z.ToString());
             Number v = new Number(x.ToString());
 
