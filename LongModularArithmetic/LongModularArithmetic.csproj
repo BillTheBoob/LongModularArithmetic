@@ -51,10 +51,8 @@
     <Compile Include="LMATests.cs" />
     <Compile Include="ModCalculator.cs" />
     <Compile Include="Number.cs" />
-    <Compile Include="PATests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PrimalityAlgorithm.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
