@@ -1,0 +1,17 @@
+language: csharp
+
+script:
+
+  - xbuild /p:Configuration=Debug LongModularArithmetic.sln
+
+before_install:
+
+  - sudo apt-get install nunit-console
+
+before_script:
+
+  - nuget restore LongModularArithmetic.sln
+
+after_script:
+
+  - nunit-console LongModularArithmetic/bin/Debug/LongModularArithmetic.exe
